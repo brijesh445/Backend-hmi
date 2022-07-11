@@ -27,7 +27,6 @@ app.use(express.json());
 
 app.get('/', async (req: Request, res: Response) => {
 console.log('db conncetion',DB);
-const data=Exam_Result_Question.find({});
 });
 
 app.use('/api', router);

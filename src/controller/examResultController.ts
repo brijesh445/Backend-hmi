@@ -11,13 +11,42 @@ class ExamResultController {
 
         try {
             const ID = req.params.COURSE_ID;
+
+            /* 
             const Data = await Exam_Result_Model.find({
                 course_id: ID
-            }).exec();
+            })
+            .populate('students')
+            .exec();
             res.status(200).json({
                 Message: 'All Students',
                 Data
             });
+         */
+
+        Exam_Result_Model.aggregate([{
+                $lookup: {
+                    from: "students", // collection name in db
+                    localField: "student_id",
+                    foreignField: "_id",
+                    as:"student"
+                }
+            }]).exec(function(err, students) {
+
+                if(err){
+                    res.status(404).json({
+                        Message: 'Students Not Found',
+                        Error:err
+                    });
+                }else{
+                    res.status(200).json({
+                        Message: 'All Students',
+                        Data:students
+                    });
+                }
+
+            });
+            
         } catch (error) {
             res.send(500).json({
                 Message: 'internal server error',
@@ -35,7 +64,7 @@ class ExamResultController {
         try {
             const Exam_Result_ID = req.params.Exam_Result_ID;
             const QueryCondition = {
-                Exam_Result_Question: Exam_Result_ID
+                exam_result_id: Exam_Result_ID
             }
 
             const data = await Exam_Result_Question.find(QueryCondition);
@@ -99,6 +128,8 @@ class ExamResultController {
 
     async update_exam_marks(req:Request,res:Response):Promise<any>{
 
+
+        console.log('Marks Update')
         try {
 
             const EXAM_RESULT_ID=req.params.EXAM_RESULT_ID;
@@ -106,15 +137,20 @@ class ExamResultController {
             const Update={
                 scored_points:POINTS
             }
-            const Updated_Exam_Marks=await Exam_Result_Model.findByIdAndUpdate(EXAM_RESULT_ID,Update);
-
-        
+            const Updated_Exam_Marks=await Exam_Result_Model.findByIdAndUpdate(EXAM_RESULT_ID,Update, {new:true});
+              
+            if(Updated_Exam_Marks){
                 res.status(200).json({
                     Message:'Updated Marks',
                     Data:Updated_Exam_Marks
                 });
+            }else{
+                res.status(409).json({
+                    Message:'Cant Updated Marks',
+                    Data:Updated_Exam_Marks
+                });
+            }
          
-
         } catch (error) {
             res.send(500).json({
                 Message: 'internal server error',

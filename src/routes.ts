@@ -33,7 +33,7 @@ router.get('/students/exam/:Exam_Result_ID',examResultController.get_exam_questi
 
 //update user exam marks
 
-router.patch('/student/mark-updat/:Question_ID/:Marks',examResultController.update_question_marks);
+router.patch('/student/mark-update/:Question_ID/:Marks',examResultController.update_question_marks);
 
 // update exam_results_marks
 
