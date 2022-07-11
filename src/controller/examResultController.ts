@@ -10,8 +10,7 @@ class ExamResultController {
     async Get_All_Users(req: Request, res: Response): Promise<any> {
 
         try {
-            const ID = req.params.COURSE_ID;
-
+        
             /* 
             const Data = await Exam_Result_Model.find({
                 course_id: ID
@@ -23,8 +22,11 @@ class ExamResultController {
                 Data
             });
          */
+            let ID = new mongoose.Types.ObjectId(req.params.COURSE_ID);
 
-        Exam_Result_Model.aggregate([{
+        Exam_Result_Model.aggregate([
+            { $match: { course_id: ID } },
+            {
                 $lookup: {
                     from: "students", // collection name in db
                     localField: "student_id",

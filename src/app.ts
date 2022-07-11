@@ -20,7 +20,7 @@ const upload = multer({ storage: storage })
 
 const app: Express = express();
 
-app.use(cors()) 
+app.use(cors());
 
 app.use(express.json());
 
@@ -30,8 +30,5 @@ console.log('db conncetion',DB);
 });
 
 app.use('/api', router);
-
-
-
 
 export default app;
