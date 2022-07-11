@@ -20,15 +20,26 @@ const upload = multer({ storage: storage })
 
 const app: Express = express();
 
-const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
 
-app.use(cors(corsOptions));
+
+app.use(cors());
 
 app.use(express.json());
 
+
+app.use((req:Request, res:Response, next:NextFunction) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method === "OPTIONS") {
+      res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+      return res.status(200).json({});
+    }
+    next();
+  });
+  
 
 app.get('/', async (req: Request, res: Response) => {
 console.log('db conncetion',DB);
