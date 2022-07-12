@@ -57,5 +57,42 @@ class CourseController {
     }
 
 
+    async update_points(req:Request,res:Response){
+
+        try {
+
+            const CourseID=req.params.CourseID;
+
+            const data=req.body;
+
+
+           const updated_points = await CourseModel.findByIdAndUpdate(CourseID,data, {new:true})
+
+                    if(!updated_points){
+                        res.status(409).json({
+                            Message:'cant update point for course ',
+                            ID:CourseID
+                        })
+                    
+                    }else{
+                        res.status(200).json({
+                            Message:'Update the points',
+                            CourseID,
+                            Data:updated_points
+                        })
+                    }
+
+
+                    
+        } catch (error) {
+            res.send(500).json({
+                Message:'internal server error',
+                Status:res.status,
+                Errors:JSON.stringify(error)
+            })
+        }
+
+    }
+
 }
 export default new CourseController();

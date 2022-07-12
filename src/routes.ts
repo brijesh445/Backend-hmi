@@ -48,3 +48,8 @@ router.post('/add-sem',SemesterController.add_new_semester);
 
 
 router.post('/add-course/:semID',coursesController.add_new_course);
+
+
+// update course points
+
+router.patch('/sem/update-points/:CourseID',coursesController.update_points)
