@@ -1,2 +1,2 @@
-# Backend-hmi
-hmi backend using express , mongodb, typescript
+# Backend - HMI
+A RESTful API built Using Node.js , Typescript , Express.js and Mongodb
