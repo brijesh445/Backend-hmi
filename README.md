@@ -19,7 +19,7 @@ npm install
 
 ```bash
 PORT=3000
-ATLAS_URI='{MONGO_URI}'
+ATLAS_URI=MONGO_URI
 ```
 
 ## Run
